@@ -16,7 +16,7 @@ export class MessageGateway {
   ) {
     //save message in database
     this.messageService.saveMessage(payload);
-    client.to(payload.roomId).emit(Events.MESSAGE, payload);
+    client.to(payload.roomId.toString()).emit(Events.MESSAGE, payload);
   }
 
   @SubscribeMessage(Events.MOVE)

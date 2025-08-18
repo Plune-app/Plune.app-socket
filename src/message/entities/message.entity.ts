@@ -25,7 +25,7 @@ export class Message {
 
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn({ name: "userId" })
-  user: number;
+  user: User;
 
   @ManyToOne(() => Chat, (chat) => chat.messages)
   chat: Chat;

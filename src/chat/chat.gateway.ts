@@ -3,8 +3,10 @@ import { ChatService } from './chat.service';
 import { Socket, Server } from "socket.io"
 import { SaveChatDto } from './dto/save-chat.dto';
 import { Events } from 'src/events';
+import { JwtSecurityService } from 'src/auth/jwt.service';
+import { UnauthorizedException } from '@nestjs/common';
 
-@WebSocketGateway({ cors : { origin : "*" }})
+@WebSocketGateway({ cors: { origin: "*" } })
 export class ChatGateway {
   @WebSocketServer()
   server: Server;
@@ -16,12 +18,16 @@ export class ChatGateway {
     @MessageBody() payload: { roomId: string, token: string },
     @ConnectedSocket() socket: Socket
   ) {
-    socket.join(payload.roomId);
+    try {
+      socket.join(payload.roomId);
+      JwtSecurityService.validateToken(payload.token);
 
-    //this emits for all sockets inside payload.roomId
-    this.server.to(payload.roomId).emit("notification", `User joined in ${payload.roomId}`);
-    console.log("connected ")
-
+      //this emits for all sockets inside payload.roomId
+      this.server.to(payload.roomId).emit("notification", `User joined in ${payload.roomId}`);
+      console.log("connected ")
+    } catch (err: unknown) {
+      throw new UnauthorizedException("Invalid token");
+    }
   }
 
   @SubscribeMessage('createChat')

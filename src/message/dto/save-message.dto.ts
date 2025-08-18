@@ -1,7 +1,7 @@
 export class SaveMessageDTO {
   message: string;
   userId: number;
-  roomId: string
+  roomId: number
   messageId?: string;
   sentAt?: Date;
 }
