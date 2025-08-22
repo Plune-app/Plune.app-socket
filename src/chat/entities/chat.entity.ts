@@ -1,8 +1,10 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Message } from "src/message/entities/message.entity";
+import { Organization } from "src/message/entities/organization.entity";
 
-@Entity({ name : "chat" })
+
+@Entity({ name: "chat" })
 export class Chat {
 
   @PrimaryColumn({ name: "roomId", type: "text" })
@@ -21,4 +23,8 @@ export class Chat {
   @Column({ name: "type", enum: ["private", "public"], default: "private", type: "text" })
   type: string
 
+  @ManyToOne(() => Organization, (org) => org.chats)
+  @JoinColumn({ name: "organizationId" })
+  organization: Organization
 }
+

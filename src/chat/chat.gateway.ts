@@ -19,13 +19,14 @@ export class ChatGateway {
     @ConnectedSocket() socket: Socket
   ) {
     try {
-      socket.join(payload.roomId);
       JwtSecurityService.validateToken(payload.token);
+      socket.join(payload.roomId);
 
       //this emits for all sockets inside payload.roomId
       this.server.to(payload.roomId).emit("notification", `User joined in ${payload.roomId}`);
       console.log("connected ")
     } catch (err: unknown) {
+      console.log("erro de token")
       throw new UnauthorizedException("Invalid token");
     }
   }

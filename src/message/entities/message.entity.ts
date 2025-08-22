@@ -1,6 +1,7 @@
 import { Chat } from "src/chat/entities/chat.entity";
 import { User } from "src/chat/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Organization } from "./organization.entity";
 
 @Entity({ name: "message" })
 export class Message {
@@ -11,8 +12,8 @@ export class Message {
   @Column({ name: "messageId", type: "text", nullable: true })
   messageId?: string;
 
-  @Column({ name: "message", type: "text" })
-  message: string;
+  @Column({ name: "content", type: "text" })
+  content: string;
 
   @Column({ name: "roomId", type: "text" })
   roomId: string;
@@ -28,6 +29,9 @@ export class Message {
   user: User;
 
   @ManyToOne(() => Chat, (chat) => chat.messages)
+  @JoinColumn({ name: "chatId" })
   chat: Chat;
 
+  @ManyToOne(() => Organization)
+  organization : Organization;
 }

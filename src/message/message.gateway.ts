@@ -15,8 +15,9 @@ export class MessageGateway {
     @ConnectedSocket() client: Socket,
   ) {
     //save message in database
+    console.log(payload.roomId)
+    client.broadcast.to(payload.roomId).emit(Events.MESSAGE, payload);
     this.messageService.saveMessage(payload);
-    client.to(payload.roomId.toString()).emit(Events.MESSAGE, payload);
   }
 
   @SubscribeMessage(Events.MOVE)

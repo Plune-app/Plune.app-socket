@@ -5,6 +5,7 @@ import { Message } from './entities/message.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/chat/entities/user.entity';
 import { Chat } from 'src/chat/entities/chat.entity';
+import { Organization } from './entities/organization.entity';
 
 @Injectable()
 export class MessageService {
@@ -28,9 +29,12 @@ export class MessageService {
     }
     const message = new Message();
     Object.assign(message, payload);
-    message.user = { id  : payload.userId } as User;
-    message.chat = { roomId : payload.roomId } as Chat;
-    
+    //apenas em casos onde a mensagem for para um grupo
+    // message.chat = { roomId: payload.roomId } as Chat;
+    message.user = { id: payload.userId } as User;
+    message.content = payload.message;
+    message.organization = { id: payload.organizationId } as Organization;
+    message.read = false;
     this.messageRepo.save(message);
   }
 
