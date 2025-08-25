@@ -25,9 +25,9 @@ export class User {
   @Column({ type: "date", default: new Date(), name: "lastAccess" })
   lastAccess: Date;
 
-  @ManyToMany(() => Chat, (chat) => chat.users)
-  @JoinTable() // apenas de um lado!
-  chats: Chat[];
+  // @ManyToMany(() => Chat, (chat) => chat.users)
+  // @JoinTable() // apenas de um lado!
+  // chats: Chat[];
 
   @OneToMany(() => Message, (msg) => msg.user)
   messages: Message[]

@@ -32,7 +32,7 @@ export class MessageService {
     //apenas em casos onde a mensagem for para um grupo
     // message.chat = { roomId: payload.roomId } as Chat;
     message.user = { id: payload.userId } as User;
-    message.content = payload.message;
+    message.content = payload.content;
     message.organization = { id: payload.organizationId } as Organization;
     message.read = false;
     this.messageRepo.save(message);

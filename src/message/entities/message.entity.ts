@@ -3,6 +3,7 @@ import { User } from "src/chat/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Organization } from "./organization.entity";
 
+
 @Entity({ name: "message" })
 export class Message {
   // generated inside frontend to get more performance
@@ -18,11 +19,17 @@ export class Message {
   @Column({ name: "roomId", type: "text" })
   roomId: string;
 
-  @Column({ name: "sentAt", type: "text" })
-  sentAt: Date;
+  @Column({ name: "sentAt", type: "text", nullable: true })
+  sentAt: string;
+
+  @Column({ name: "clientTime", type: "text", nullable: true })
+  clientTime: string;
 
   @Column({ name: "read", type: "boolean", default: false })
   read: boolean;
+
+  @Column({ name: "userId", type: "number" })
+  userId: number;
 
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn({ name: "userId" })
@@ -33,5 +40,5 @@ export class Message {
   chat: Chat;
 
   @ManyToOne(() => Organization)
-  organization : Organization;
+  organization: Organization;
 }
